@@ -1,0 +1,2 @@
+git pull origin master --allow-unrelated-histories
+执行该命令后拉去成功，再成功推送
