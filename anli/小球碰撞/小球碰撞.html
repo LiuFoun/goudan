@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>JS39期-千寻老师</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{}
+    #box{
+        position: absolute;
+        left: 500px;
+        top: 400px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(to top,red, blue);
+        border: 1px solid #000;
+        border-radius: 50%;
+    }
+</style>
+</head>
+<body>
+      <div id="box">
+
+      </div>
+
+<script>
+    /*IE兼容*/
+    window.requestAnimationFrame = window.requestAnimationFrame || function(fn){
+        return setTimeout(fn,1000/60);
+     };
+     window.cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout;
+
+     /*小球运动*/
+    var obox = document.getElementById('box');
+    var x = 700,y=400;
+    var obW = obox.getBoundingClientRect().width,
+        obH = obox.getBoundingClientRect().height;
+    var maxW = document.documentElement.clientWidth,
+        maxH = document.documentElement.clientHeight;
+
+    animation(obox,3,-3);
+    function animation(obox,v_x,v_y){
+
+        (function quest(){
+            x += v_x ;
+            y += v_y;
+
+        /************边界问题分析**************/
+            if( obW + x >= maxW || x<0){
+                x = Math.min(maxW - obW,x);
+                x = Math.max(x,0)
+                v_x = -v_x;
+            }
+
+            if(obH + y >= maxH || y < 0){
+                y = Math.min(maxH-obH,y);
+                y = Math.max(y,0)
+                v_y= -v_y;
+            }
+            requestAnimationFrame(quest);
+            obox.style.left = x + 'px';
+            obox.style.top = y + 'px';
+        })();
+    }
+</script>
+</body>
+</html>
