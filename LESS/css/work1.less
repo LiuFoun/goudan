@@ -1,0 +1,109 @@
+@charset 'utf-8';
+*{margin:0;padding:0;}
+@H:height;
+@W:width;
+@L-H:line-height;
+@BG:background;
+@Mar:margin;
+@F-S:font-size;
+@M-R:margin-right;
+@T-D:text-decoration;
+@C:color;
+@Dis:display;
+@L-S:list-style;
+@T-A:text-align;
+
+
+@hh:165px;
+@hh-nav:43px;
+@h-lo:85px;
+@ww:1000px;
+@ww-li:123px;
+@l-h:35px;
+@lh-lo:100px;
+@bg-top:#fafafa;
+@bg-nav:#2a98da;
+@bg-li:#b6defb;
+@mar:auto;
+@mr-lo:170px;
+@f12:12px;
+@m-r:20px;
+@n:none;
+@ac:blue;
+@a:#000;
+@txta:#fff;
+@i-l:inline-block;
+@cen:center;
+
+.FL{
+    float:left;
+}
+.FR{
+    float:right;
+}
+.clearfixed:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+a{
+    @{T-D}:@n;
+    @{C}:@a;
+}
+
+
+/*混合 @arguments变量*/
+.border-bottom(@bw:0;@bs:0;@bc:0;){
+    border-bottom:@arguments;
+};
+
+.main{
+    @{W}:@ww;
+    @{Mar}:@mar;
+}
+
+
+.header{
+    @{H}:@hh;
+    .top{
+        @{L-H}:@l-h;
+        height:35px;
+        @{BG}:@bg-top;
+        .border-bottom(1px,solid,#f1f1f1);
+        @{F-S}:@f12;
+        span{
+            @{M-R}:@m-r;
+        }
+        a{
+            @{T-D}:@n;
+            &:hover{
+                @{C}:@ac;
+            }   
+        }
+    }
+    .logo{
+        @{H}:@h-lo;
+        @{L-H}:@lh-lo;
+        h1{
+            @{Dis}:@i-l;
+            @{M-R}:@mr-lo;
+        }
+    }
+    .headNav{
+        @{H}:@hh-nav;
+        @{L-H}:@hh-nav;
+        @{BG}:@bg-nav;
+        ul li{
+            .FL;
+            @{W}:@ww-li;
+            @{L-S}:@n;
+            @{T-A}:@cen;
+            &:hover{
+                @{BG}:@bg-li;
+            }
+            a{
+                @{C}:@txta;
+            }
+        }
+    }
+}

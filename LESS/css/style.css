@@ -1,0 +1,69 @@
+@charset 'utf-8';
+* {
+  margin: 0;
+  padding: 0;
+}
+.FL {
+  float: left;
+}
+.FR {
+  float: right;
+}
+.clearfixed:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+/*混合 @arguments变量*/
+.main {
+  width: 1000px;
+  margin: auto;
+}
+.header {
+  height: 165px;
+}
+.header .top {
+  line-height: 35px;
+  height: 35px;
+  background: #fafafa;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 12px;
+}
+.header .top span {
+  margin-right: 20px;
+}
+.header .top a {
+  text-decoration: none;
+}
+.header .top a:hover {
+  color: blue;
+}
+.header .logo {
+  height: 85px;
+  line-height: 100px;
+}
+.header .logo h1 {
+  display: inline-block;
+  margin-right: 170px;
+}
+.header .headNav {
+  height: 43px;
+  line-height: 43px;
+  background: #2a98da;
+}
+.header .headNav ul li {
+  float: left;
+  width: 123px;
+  list-style: none;
+  text-align: center;
+}
+.header .headNav ul li:hover {
+  background: #b6defb;
+}
+.header .headNav ul li a {
+  color: #fff;
+}
