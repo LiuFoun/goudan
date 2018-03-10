@@ -2,7 +2,7 @@
 #play{
     width: 1020px;
     height: 50px;
-    background: #222225;
+    background: url("../images/playbg.png");
 }
 #play>div{
     float: left;
@@ -21,6 +21,8 @@
     float: left;
     width: 26px;
     height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 .keys span.prev{
     top: 11px;
@@ -116,6 +118,7 @@
 }
 
 
+
 .volume{
     position: relative;
     width: 150px;
@@ -145,11 +148,17 @@
 .volumeBar .bar{
     position: absolute;
     top: -4px;
-    left: -6px;
+    left: 94px;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: #fff;
+}
+.volumeBar .red{
+    width: 100px;
+    height: 4px;
+    border-radius: 2px;
+    background: red;
 }
 
 

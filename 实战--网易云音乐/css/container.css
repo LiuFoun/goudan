@@ -1,5 +1,6 @@
 #container{
     position: relative;
+    background: #17191c;
     height: 570px;
 }
 #container .containerList{
@@ -217,7 +218,6 @@ tbody tr:hover .singername,tbody tr:hover .albumname{
 
 /*contentDetails*/
 .contentDetails{
-    opacity: 0;
     position: absolute;
     top: 0;
     left: 0;
@@ -291,11 +291,18 @@ tbody tr:hover .singername,tbody tr:hover .albumname{
     color:#7a7a7c;
 }
 .contentDetails .lyric .bottom{
+    overflow:hidden;
     position: relative;
     width: 400px;
     height: 300px;
     margin-top: 30px;
     border-right: 1px solid #ddd;
+}
+#lyricList{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 1s linear;
 }
 #lyricList li{
     padding: 2px;

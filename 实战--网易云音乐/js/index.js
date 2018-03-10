@@ -4,11 +4,18 @@
 //https://route.showapi.com/213-1?keyword=海阔天空&page=1&showapi_appid=58171&showapi_test_draft=false&showapi_timestamp=20180305171348&showapi_sign=f9ea7241948048ab8ed57fae8445b114
 
 
+//showapi_appid=51833
+// showapi_sign=288ae6dfd1f34e0b8463848fc4006c5a   one of fy's count
+
+
 $(function (){
     var $Audio = $("audio"),
         $Tbody = $("#tbody"),
-        $Play = $("#play")
+        $Play = $("#play"),
+        timeArr,num=0;
     console.log($Tbody);
+    //初始满音量
+    $Audio[0].volume = 1;// 0到1，音量值
 
     // $("<tr><td>rrr</td></tr>").appendTo($Tbody);
     // console.log($Tbody);
@@ -16,7 +23,7 @@ $(function (){
 //先初始化一首歌
     function searchMusic(songname,page){
         $Tbody.html("");
-        var url = "https://route.showapi.com/213-1?keyword="+songname+"&page="+page+"&showapi_appid=58176&showapi_test_draft=false&showapi_timestamp="+getTime()+"&showapi_sign=f9ea7241948048ab8ed57fae8445b114";
+        var url = "https://route.showapi.com/213-1?keyword="+songname+"&page="+page+"&showapi_appid=51833&showapi_test_draft=false&showapi_timestamp="+getTime()+"&showapi_sign=288ae6dfd1f34e0b8463848fc4006c5a";
 
         $.getJSON(url,function(msg){
             var songInfo = msg.showapi_res_body.pagebean;
@@ -57,10 +64,7 @@ $(function (){
 
 
 
-            //确定滚动条的高度
-            if($){
 
-            }
 
         })
     }
@@ -133,30 +137,35 @@ $(function (){
 
 
     })();
+
+
+
+
 //点击播放
     $Tbody.on("dblclick","tr",function(){
-        var $sidebarFooter = $(".sidebarFooter"),
-            $smallImg =   $sidebarFooter.children("img"),
-            $singname = $sidebarFooter.find(".singname"),
-            $singername = $sidebarFooter.find(".singername");
 
-        //  歌曲小头像
-        $smallImg.prop("src",$(this).data("albumpicsmall"));
-        //    歌名
-        $singname.html($(this).data("songname"));
-        //    歌手名
-        $singername.html($(this).data("singername"));
+        console.log("播放歌曲");
+
         //    播放当前点击的歌曲
-        $Audio.prop("src",$(this).data("m4a"))[0].play();
+        //$Audio.prop("src",$(this).data("m4a"))[0].play();
         $Play.find(".play").addClass("zanting").removeClass("bofang");
-        $Audio.data("showTime",$(this).index());
+        $Audio.data({
+            "showTime":$(this).index(),
+            "smallImg":$(this).data("albumpicsmall"),
+            "songname":$(this).data("songname"),
+            "singername":$(this).data("singername"),
+            "songid":$(this).data("songid")
+        });
+        console.log($Audio.data())
     });
+// input搜索歌曲
     $("#header .search").keyup(function(e){
         if(e.keyCode !== 13){return};
         var val = $(this).val();
         if(val){
             $Tbody.data("songname",val);
-            searchMusic(val,1)
+            searchMusic(val,1);
+            closeLayer();
         }
     });
 //点击播放暂停
@@ -165,15 +174,21 @@ $(function (){
         var $player = $Play.find(".play"),
             $prev = $Play.find(".prev"),
             $next = $Play.find(".next");
-        var $sidebarFooter = $(".sidebarFooter"),
-            $smallImg =   $sidebarFooter.children("img"),
-            $singname = $sidebarFooter.find(".singname"),
-            $singername = $sidebarFooter.find(".singername");
+
+
+        // function switchSong(showTime,$tr){
+        //
+        //     var m4a = $tr.eq(showTime).data("m4a");
+        //
+        //     $Audio.prop("src",m4a)[0].play(0);
+        //     $Audio.data("showTime",showTime);
+        //
+        // }
+
 
         $player.on("click",function(){
             if($(this).hasClass("bofang")){//真就是没有播放音乐
                 $Audio[0].play();
-                //$(this).addClass("zanting")
             }else{//正在播放音乐，点击暂停
                 $Audio[0].pause();
             }
@@ -183,30 +198,225 @@ $(function (){
         $prev.on("click",function(){
             var showTime = $Audio.data("showTime") - 1;
             var $tr = $Tbody.children();
-            var m4a = $tr.eq(showTime).data("m4a");
             showTime = (showTime === -1) ? $tr.length-1 : showTime;
-            $Audio.prop("src",m4a)[0].play(0);
-            $Audio.data("showTime",showTime);
-            console.log(showTime);
-            $smallImg.prop("src",$tr.eq(showTime).data("albumpicsmall"));
-            //    歌名
-            $singname.html($tr.eq(showTime).data("songname"));
-            //    歌手名
-            $singername.html($tr.eq(showTime).data("singername"));
+            var $trThis = $tr.eq(showTime);
+            $Audio.prop("src",$trThis.data("m4a"))[0].play(0);
+            console.log($Audio.prop("src"));
+            $Audio.data({
+                "showTime":showTime,
+                "smallImg":$trThis.data("albumpicsmall"),
+                "songname":$trThis.data("songname"),
+                "singername":$trThis.data("singername"),
+                "songid":$(this).data("songid")
+            });
         });
         //  下一首
         $next.on("click",function(){
             var showTime = $Audio.data("showTime") + 1;
             var $tr = $Tbody.children();
-            var m4a = $tr.eq(showTime).data("m4a");
             showTime %= $tr.length;
-            $Audio.prop("src",m4a).play(0);
-            $Audio.data("showTime",showTime);
-            console.log(showTime)
+            var $trThis = $tr.eq(showTime);
+            $Audio.prop("src",$trThis.data("m4a"))[0].play(0);
+            console.log($Audio.prop("src"));
+            $Audio.data({
+                "showTime":showTime,
+                "smallImg":$trThis.data("albumpicsmall"),
+                "songname":$trThis.data("songname"),
+                "singername":$trThis.data("singername"),
+                "songid":$(this).data("songid")
+            })
         });
 
 
     })();
+//同步进度条
+function Synchronize(){
+    var $control = $Play.children(".control"),
+        $progressBar = $control.find(".progress");
+    //获取总时长
+    var $TotalTime = $Audio[0].duration,
+        currentTime = $Audio[0].currentTime;
+
+    var x = Math.floor($Audio[0].currentTime)/Math.floor($TotalTime)*$progressBar.width();
+    $progressBar.children(".red").css("width",x);
+    $progressBar.children(".bar").css("width",x - $progressBar.children(".bar").width()/2);
+
+    //格式化时间
+    var time = fm(Math.floor($currentTime/60)) + fm(Math.floor(currentTime%60));//03:04
+    $control.children(".time").html(time);
+
+    console.log("已经播放");
+}
+//  进度条拖动
+    (function(){
+        $(".progress .bar").on("mousedown",function(e){
+            $Audio.off("timeupdate");
+            var $target = $(this);
+            var mouseOldX = e.clientX,//点击时坐标x到页面左端距离
+                max = $target.parent().width(),//350
+                left = $target.position().left,//-7
+                OldWidth = $target.prev().width();//进度条红线长度
+
+            $(document).on("mousemove",function(e){
+                console.log(e.clientX);
+                var _X = e.clientX - mouseOldX + left;
+                // var _X = e.clientX - mouseOldX;
+                _X = Math.max(0,_X);
+                _X = Math.min(_X,max);
+                OldWidth = _X;
+                $target.prev().css("width",_X);
+                $target.css("left",_X - $target.width()/2);
+            });
+
+            $(document).one("mouseup",function(){
+                // $Audio[0].currentTime = OldWidth/max * Math.floor($Audio[0].duration);//此处因连接有问题无法获取数据报错，中断后面解除绑定时间
+                $Audio.on("timeupdate",function () {
+                    Synchronize();
+                });
+                console.log("up");
+                $(this).off("mousemove");
+            });
+
+        })
+    })();
+
+
+    // Audio 的事件
+    // Audio 的currentTime发生改变触发的事件
+    $Audio.on("timeupdate",function(){
+        var $aLi = $("#lyricList").children();
+        Synchronize();
+
+        if($Audio[0].currentTime > timeArr[num]*1){
+            num++;
+            $aLi.each(function(index,key){
+                if(index < num){
+                    $(key).css("color","#666")
+                }else if(index === num){
+                    if(num > 4 && num<$aLi.length-5){// 控制ul滚动
+                        $("#lyricList").css("top",-(index-4)*27);
+                    }
+                    $(key).css("color","#f60")
+                }
+            })
+        }
+    });
+    //Audio 的资源开始加载时触发的事件
+    $Audio.on("loadstart",function(){
+        var $sidebarFooter = $(".sidebarFooter"),
+            $smallImg =   $sidebarFooter.children("img"),
+            $songname = $sidebarFooter.find(".singname"),
+            $singername = $sidebarFooter.find(".singername");
+        console.log($(this).data);
+
+        //  歌曲小头像
+        $smallImg.prop("src",$(this).data("albumpicsmall"));
+        //    歌名
+        $songname.html($(this).data("songname"));
+        //    歌手名
+        $singername.html($(this).data("singername"));
+        // 歌曲 id 用于获取歌词
+        getLyric($(this).data("songid"));
+        num = 0;
+        $("#lyricList").css("top",0);
+    });
+    //音量控制
+    (function(){
+        $(".volume .bar").on("mousedown",function(e){
+            var $target = $(this);
+            var mouseOldX = e.clientX,
+                max = $target.parent().width(),
+                left = $target.position().left,
+                OldWidth = $target.prev().width();
+
+            $(document).on("mousemove",function(e){
+                console.log(e.clientX);
+                var _X = e.clientX - mouseOldX + left;
+                // var _X = e.clientX - mouseOldX;
+                _X = Math.max(0,_X);
+                _X = Math.min(_X,max);
+                OldWidth = _X;
+                $target.prev().css("width",_X);
+                $target.css("left",_X - $target.width()/2);
+                $Audio[0].volume = OldWidth/max;
+            });
+
+            $(document).one("mouseup",function(){
+                $(this).off("mousemove");
+            });
+
+        })
+    })();
+    //打开歌词层
+    (function(){
+        $(".sidebarFooter").click(layer);
+        $(".lyric .top .icon-suoxiaole").click(closeLayer);
+        $(".contentDetails").css("opacity",0);
+
+        function layer(){
+            $(".containerList").fadeTo(1000,0,function(){
+                $(this).css("z-index",3);
+                $(".contentDetails").fadeTo(1000,1,function(){
+                    $(this).css("z-index",3)
+                })
+            });
+
+        }
+
+
+
+
+
+
+    })();
+    function closeLayer(){
+        console.log(1);
+        $(".contentDetails").fadeTo(1000,0,function(){
+            $(this).css("z-index",3);
+            $(".containerList").fadeTo(1000,1,function(){
+                $(this).css("z-index",3)
+            })
+        });
+    }
+
+//请求歌词
+    function getLyric(songid){
+        $("#lyricList").html("");
+        var url = "https://route.showapi.com/213-2?musicid="+songid+"&showapi_appid=58171&showapi_test_draft=false&showapi_timestamp="+getTime()+"&showapi_sign=68217dfbac906d6e6689d69c7a23be1b";
+        $.getJSON(url,function(msg){
+           // console.log(msg.showapi_res_body.lyric);
+            $("#FMlyric").html(msg.showapi_res_body.lyric);
+            $("#FMlyric").html().replace(/\[([\d:.]+)\](.*)/,function(a,$1,$2){
+                $("<li></li>").data("time",$1).html($2).appendTo($("#lyricList"))
+            });
+            Synchronize();
+        });
+
+    }
+//歌词滚动
+    function scrollLyric(){
+        var $Ul = $("#lyricList"),
+            $aLi = $Ul.children();
+
+        timeArr = $aLi.map(function(value,li){//03:08.05
+            return $(li).data("time").replace(/(\d{2}):(\d{2}).(\d{2})/,function(a,$1,$2){
+                return $1 * 60 + $2*1
+            })
+        });
+
+    }
+//  下载当前
+    $("#download").click(function(){
+        var a = $("<a href='"+$Audio[0].src+"'></a>");
+        a[0].download = "0";
+        a[0].click();
+    });
+
+
+
+
+
+
 
 
     //获取本地时间

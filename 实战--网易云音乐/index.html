@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ondragstart="return false">
 <head>
 	<meta charset="UTF-8">
 	<title>网易云音乐</title>
@@ -102,7 +102,7 @@
 								<a href="#">播放全部</a>
 								<a href="#">收藏</a>
 								<a href="#">分享</a>
-								<a href="#">下载当前</a>
+								<a href="#" id="download">下载当前</a>
 							</div>
 						</div>
 						<!--歌曲列表-->
@@ -162,19 +162,20 @@
 				<div class="bottom">
 					<div class="lyricBody"></div>
 						<ul id="lyricList">
-							<!--<li>在你的眼里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
-							<!--<li>在我的怀里</li>-->
+							<li></li>
+							<li>在你的眼里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
+							<li>在我的怀里</li>
 						</ul>
 				</div>
 			</div>
@@ -214,6 +215,7 @@
 		<div class="lyric"></div>
 	</div>
 	<audio type="audio/mp4" autoplay src=""></audio>
+	<div style="display: none" id="FMlyric"></div>
 </div>
 
 </body>
